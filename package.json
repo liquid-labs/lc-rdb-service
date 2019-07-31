@@ -1,7 +1,7 @@
 {
   "name": "@liquid-labs/lc-rdb-service",
   "version": "1.0.0-alpha.0",
-  "description": "RDB bootstrap library.",
+  "description": "Simple go library to bootstrap relational database connections.",
   "scripts": {
     "build": "catalyst-scripts build",
     "pretest": "catalyst-scripts pretest",
