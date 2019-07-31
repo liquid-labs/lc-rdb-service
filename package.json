@@ -1,0 +1,39 @@
+{
+  "name": "@liquid-labs/lc-rdb-service",
+  "version": "1.0.0-alpha.0",
+  "description": "RDB bootstrap library.",
+  "scripts": {
+    "build": "catalyst-scripts build",
+    "pretest": "catalyst-scripts pretest",
+    "test": "catalyst-scripts test",
+    "lint": "catalyst-scripts lint",
+    "lint-fix": "catalyst-scripts lint-fix",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Liquid-Labs/lc-rdb-service.git"
+  },
+  "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Liquid-Labs/lc-rdb-service/issues"
+  },
+  "homepage": "https://github.com/Liquid-Labs/lc-rdb-service#readme",
+  "catalyst": {
+    "requires": [
+      {
+        "iface": "sql",
+        "params-req": [],
+        "params-opt": [],
+        "config-const": []
+      }
+    ]
+  },
+  "devDependencies": {
+    "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.22"
+  },
+  "dependencies": {
+    "@liquid-labs/liquid-dev-cloudsql": "^1.0.0-prototype.0"
+  }
+}
