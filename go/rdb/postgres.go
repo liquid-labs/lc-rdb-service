@@ -60,21 +60,25 @@ func InitializeDB(modelDefs ...interface{}) {
 // * CLOUDSQL_PASSWORD
 // * CLOUDSQL_USER
 func Connect() *pg.DB {
-  options := pg.Options{
-    User:     env.MustGet("CLOUDSQL_USER"),
-    Password: env.MustGet("CLOUDSQL_PASSWORD"), // NOTE: password may NOT be empty
-    Database: env.MustGet("CLOUDSQL_DB"),
-  }
-  // We currently start the proxy as an external process, so there's no need
-  // for this.
-  /*if env.IsTest() || env.IsDev() {
-    options.Dialer = func(network, addr string) (net.Conn, error) {
-      return proxy.Dial(env.MustGet(`CLOUDSQL_CONNECTION_NAME`))
+  if (db != nil) {
+    return db
+  } else {
+    options := pg.Options{
+      User:     env.MustGet("CLOUDSQL_USER"),
+      Password: env.MustGet("CLOUDSQL_PASSWORD"), // NOTE: password may NOT be empty
+      Database: env.MustGet("CLOUDSQL_DB"),
     }
-  } else {*/
-    options.Addr = env.MustGet("CLOUDSQL_CONNECTION_NAME")
-  //}
+    // We currently start the proxy as an external process, so there's no need
+    // for this.
+    /*if env.IsTest() || env.IsDev() {
+      options.Dialer = func(network, addr string) (net.Conn, error) {
+        return proxy.Dial(env.MustGet(`CLOUDSQL_CONNECTION_NAME`))
+      }
+    } else {*/
+      options.Addr = env.MustGet("CLOUDSQL_CONNECTION_NAME")
+    //}
 
-  db = pg.Connect(&options)
-  return db
+    db = pg.Connect(&options)
+    return db
+  }
 }
