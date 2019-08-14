@@ -1,6 +1,8 @@
 package rdb
 
 import (
+  "log"
+  "os"
   // "net"
 
   "github.com/go-pg/pg"
@@ -54,6 +56,33 @@ func InitializeDB(modelDefs ...interface{}) {
   }
 }
 */
+
+var debug = os.Getenv(`DEBUG_SQL`)
+
+// Note that an earlier version didn't include the 'before' and 'after' prefix
+// and would fail to print the 'after' version. I suspect that it was comparing
+// the first X bytes, seeing they were the samae and "very close" in time, and
+// deciding that it was a duplicaate and suppressing.
+func logQuery(prefix string, qe *pg.QueryEvent) {
+  if q, err := qe.FormattedQuery(); err != nil {
+    log.Printf(`bad query (%s): %s`, prefix, err)
+  } else {
+    log.Printf(`%s query: %s`, prefix, q)
+  }
+}
+
+type dbLogger struct { }
+func (d dbLogger) BeforeQuery(qe *pg.QueryEvent) {
+  if debug == `before` || debug == `all` {
+    logQuery(`before`, qe)
+  }
+}
+func (d dbLogger) AfterQuery(qe *pg.QueryEvent) {
+  if debug != `before` && debug != `` {
+    logQuery(`after`, qe)
+  }
+}
+
 // Connect initializes the DB connection. The following environment variables must be defined:
 // * CLOUDSQL_CONNECTION_NAME
 // * CLOUDSQL_DB
@@ -79,6 +108,9 @@ func Connect() *pg.DB {
     //}
 
     db = pg.Connect(&options)
+    if debug != `` {
+      db.AddQueryHook(dbLogger{})
+    }
     return db
   }
 }
