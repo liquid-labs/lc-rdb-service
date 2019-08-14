@@ -12,7 +12,15 @@ import (
 // db the cached reference initialized by Connect.
 var db *pg.DB
 // debug controls debug logging behavior.
-var debug = os.Getenv(`DEBUG_SQL`)
+const debugKey string = `DEBUG_SQL`
+var debug = os.Getenv(debugKey)
+
+func EchoQueries(opt string) {
+  if opt == `` {
+    opt = `after`
+  }
+  debug = opt
+}
 
 // Note that an earlier version didn't include the 'before' and 'after' prefix
 // and would fail to print the 'after' version. I suspect that it was comparing
