@@ -46,6 +46,21 @@ func (d dbLogger) AfterQuery(qe *pg.QueryEvent) {
   }
 }
 
+/* go-pg v9.0.0-beta.7:
+type dbLogger struct { }
+func (d dbLogger) BeforeQuery(ctx context.Context, qe *pg.QueryEvent) (context.Context, error) {
+  if debug == `before` || debug == `all` {
+    logQuery(`before`, qe)
+  }
+  return ctx, nil
+}
+func (d dbLogger) AfterQuery(ctx context.Context, qe *pg.QueryEvent) (error) {
+  if debug != `before` && debug != `` {
+    logQuery(`after`, qe)
+  }
+  return nil
+}*/
+
 // Connect initializes the DB connection. The following environment variables must be defined:
 // * CLOUDSQL_CONNECTION_NAME
 // * CLOUDSQL_DB
