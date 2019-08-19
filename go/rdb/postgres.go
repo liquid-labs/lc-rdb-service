@@ -1,6 +1,7 @@
 package rdb
 
 import (
+  "context"
   "log"
   "os"
 
@@ -91,4 +92,8 @@ func Connect() *pg.DB {
     }
     return db
   }
+}
+
+func ConnectWithContext(ctx context.Context) *pg.DB {
+  return Connect().WithContext(ctx)
 }
